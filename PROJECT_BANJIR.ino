@@ -15,11 +15,11 @@
 #define BUZZER_PIN 33
 #define SERVO_PIN 13
 
-const float TINGGI_WADAH_CM = 4.5;  // Jarak sensor ke dasar wadah saat kosong
-const float BATAS_WASPADA   = 1.2;  // Naik ke WASPADA jika air >= 1.2 cm
-const float BATAS_BAHAYA    = 2.0;  // Naik ke BAHAYA jika air >= 2.0 cm
-const float BATAS_SURUT     = 1.1;  // Langsung lepas dari BAHAYA begitu turun <= 1.1 cm
-const float DEADZONE_KOSONG = 0.7;  // Bacaan < 0.7 cm langsung dianggap 0.0 cm (Hijau)
+const float TINGGI_WADAH_CM = 4.5;  
+const float BATAS_WASPADA   = 1.2; 
+const float BATAS_BAHAYA    = 2.0;  
+const float BATAS_SURUT     = 1.1; 
+const float DEADZONE_KOSONG = 0.7;  
 
 WiFiClientSecure espClient;
 PubSubClient client(espClient);
@@ -34,8 +34,8 @@ unsigned long totalPembacaanSensor = 0;
 unsigned long totalPesanTerkirim = 0;
 
 int sudutSekarang = -1;
-float tinggiAirTerakhir = 0.0; // Menyimpan bacaan valid terakhir (anti-reset ke 0)
-bool sedangBahaya = false;     // Mengunci status BAHAYA agar tidak kedip ke hijau
+float tinggiAirTerakhir = 0.0; 
+bool sedangBahaya = false;    
 
 void setup() {
   Serial.begin(115200);
@@ -88,7 +88,6 @@ float bacaTinggiAir() {
     delay(25);
   }
 
-  // Jika pantulan gagal/terlalu dekat (< 0.3 cm), PERTAHANKAN nilai terakhir (jangan reset ke 0!)
   if (sampelValid == 0) {
     return tinggiAirTerakhir;
   }
@@ -114,8 +113,6 @@ void loop() {
   String statusBanjir = "AMAN";
   int targetSudut = 10;
 
-  // LOGIKA PENGUNCI (HYSTERESIS):
-  // Masuk BAHAYA jika >= 2.0 cm, dan TIDAK akan keluar dari BAHAYA sampai air turun <= 0.7 cm
   if (!sedangBahaya && tinggiAir >= BATAS_BAHAYA) {
     sedangBahaya = true;
   } else if (sedangBahaya && tinggiAir <= BATAS_SURUT) {
