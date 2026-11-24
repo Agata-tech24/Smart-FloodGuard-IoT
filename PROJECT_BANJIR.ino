@@ -5,7 +5,6 @@
 #include <ESP32Servo.h>
 #include "secrets.h"
 
-// Definisi Pin Hardware
 #define TRIG_PIN 5
 #define ECHO_PIN 18
 #define RAIN_PIN 34
@@ -125,14 +124,14 @@ void loop() {
     digitalWrite(LED_KUNING, LOW);
     digitalWrite(LED_MERAH, HIGH);
     digitalWrite(BUZZER_PIN, HIGH);
-    targetSudut = 180;
+    targetSudut = 90;
   } else if (tinggiAir >= BATAS_WASPADA) {
     statusBanjir = "WASPADA";
     digitalWrite(LED_HIJAU, LOW);
     digitalWrite(LED_KUNING, HIGH);
     digitalWrite(LED_MERAH, LOW);
     digitalWrite(BUZZER_PIN, LOW);
-    targetSudut = 90;
+    targetSudut = 45;
   } else {
     statusBanjir = "AMAN";
     digitalWrite(LED_HIJAU, HIGH);
